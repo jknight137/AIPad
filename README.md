@@ -1,6 +1,6 @@
 # ⚡ AIPad
 
-**Lightweight, LLM-powered productivity cockpit for your desktop.**
+**Lightweight, offline-first desktop productivity cockpit powered by local LLMs — notes, encrypted vault, terminal, todos, calendar & analytics in one app.**
 
 AIPad is a single-binary desktop app that replaces scattered tools with one fast, offline-first workspace — rich notes, encrypted secrets vault, built-in terminal with AI assistant, GTD todos, Eisenhower matrix, calendar, time-blocking, analytics, and a "cognitive dump" mode that turns free-text brain dumps into structured action items via a local LLM.
 

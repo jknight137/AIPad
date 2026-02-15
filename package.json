@@ -22,7 +22,7 @@
   ],
   "author": "AIPad Contributors",
   "license": "MIT",
-  "description": "Lightweight LLM-powered productivity cockpit — notes, vault, terminal, todos, calendar & analytics in one desktop app",
+  "description": "Lightweight, offline-first desktop productivity cockpit powered by local LLMs — notes, encrypted vault, terminal, todos, calendar & analytics in one app",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@tsconfig/svelte": "^5.0.7",
