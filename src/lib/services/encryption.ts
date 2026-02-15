@@ -12,7 +12,7 @@ function getStorage() {
 
 async function deriveKey(
   password: string,
-  salt: Uint8Array,
+  salt: BufferSource,
 ): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
@@ -37,14 +37,14 @@ async function deriveKey(
   );
 }
 
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
+function arrayBufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
   let binary = "";
   bytes.forEach((b) => (binary += String.fromCharCode(b)));
   return btoa(binary);
 }
 
-function base64ToArrayBuffer(base64: string): Uint8Array {
+function base64ToBytes(base64: string): Uint8Array {
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -57,17 +57,17 @@ export async function encryptData(
   data: string,
   password: string,
 ): Promise<string> {
-  let saltB64 = getStorage().getItem(SALT_KEY);
+  const saltB64 = getStorage().getItem(SALT_KEY);
   let salt: Uint8Array;
 
   if (!saltB64) {
     salt = crypto.getRandomValues(new Uint8Array(16));
     getStorage().setItem(SALT_KEY, arrayBufferToBase64(salt));
   } else {
-    salt = base64ToArrayBuffer(saltB64);
+    salt = base64ToBytes(saltB64);
   }
 
-  const key = await deriveKey(password, salt);
+  const key = await deriveKey(password, salt as unknown as BufferSource);
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const encoder = new TextEncoder();
 
@@ -78,9 +78,10 @@ export async function encryptData(
   );
 
   // Prepend IV to ciphertext
-  const combined = new Uint8Array(iv.length + new Uint8Array(encrypted).length);
+  const encryptedBytes = new Uint8Array(encrypted);
+  const combined = new Uint8Array(iv.length + encryptedBytes.length);
   combined.set(iv);
-  combined.set(new Uint8Array(encrypted), iv.length);
+  combined.set(encryptedBytes, iv.length);
 
   return arrayBufferToBase64(combined);
 }
@@ -92,10 +93,10 @@ export async function decryptData(
   const saltB64 = getStorage().getItem(SALT_KEY);
   if (!saltB64) throw new Error("No vault found");
 
-  const salt = base64ToArrayBuffer(saltB64);
-  const key = await deriveKey(password, salt);
+  const salt = base64ToBytes(saltB64);
+  const key = await deriveKey(password, salt as unknown as BufferSource);
 
-  const combined = base64ToArrayBuffer(encryptedB64);
+  const combined = base64ToBytes(encryptedB64);
   const iv = combined.slice(0, 12);
   const ciphertext = combined.slice(12);
 

@@ -8,7 +8,7 @@
   import { listen } from '@tauri-apps/api/event';
   import { theme } from '../../stores/theme';
   import { ollamaConnected, selectedModel, chatHistory, addChatMessage, clearChatHistory } from '../../stores/ollama';
-  import { chat, chatStream, AIPAD_TOOLS, SYSTEM_PROMPT } from '../../services/ollama';
+  import { chat, AIPAD_TOOLS, SYSTEM_PROMPT } from '../../services/ollama';
   import type { ChatMessage, OllamaMessage } from '../../types';
   import { v4 as uuid } from 'uuid';
 
@@ -21,6 +21,8 @@
   let chatContainer: HTMLDivElement;
   let isStreaming = false;
   let unlistenPty: (() => void) | null = null;
+  let resizeObserver: ResizeObserver | null = null;
+  let termInputDisposer: { dispose: () => void } | null = null;
 
   const termThemes: Record<string, any> = {
     dark: { background: '#0d1117', foreground: '#e6edf3', cursor: '#58a6ff', selectionBackground: '#264f78' },
@@ -32,7 +34,11 @@
     synthwave: { background: '#1a1025', foreground: '#36f9f6', cursor: '#ff6ac1', selectionBackground: '#3d2a56' },
   };
 
-  onMount(async () => {
+  onMount(() => {
+    void initializeTerminal();
+  });
+
+  async function initializeTerminal() {
     term = new Terminal({
       cursorBlink: true,
       fontFamily: 'JetBrains Mono, Cascadia Code, Consolas, monospace',
@@ -48,12 +54,11 @@
     fitAddon.fit();
 
     // Listen for PTY output
-    const unlisten = await listen<{ id: string; data: string }>('pty-output', (event) => {
+    unlistenPty = await listen<{ id: string; data: string }>('pty-output', (event) => {
       if (event.payload.id === shellId) {
         term.write(event.payload.data);
       }
     });
-    unlistenPty = unlisten;
 
     // Spawn shell
     try {
@@ -63,25 +68,23 @@
     }
 
     // Pipe terminal input to shell
-    term.onData((data) => {
+    termInputDisposer = term.onData((data) => {
       if (shellId) {
-        invoke('write_to_shell', { id: shellId, data });
+        void invoke('write_to_shell', { id: shellId, data });
       }
     });
 
     // Resize handling
-    const resizeObserver = new ResizeObserver(() => fitAddon?.fit());
+    resizeObserver = new ResizeObserver(() => fitAddon?.fit());
     resizeObserver.observe(terminalEl);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  });
+  }
 
   onDestroy(() => {
-    if (shellId) invoke('kill_shell', { id: shellId });
-    term?.dispose();
+    if (resizeObserver) resizeObserver.disconnect();
+    if (termInputDisposer) termInputDisposer.dispose();
+    if (shellId) void invoke('kill_shell', { id: shellId });
     if (unlistenPty) unlistenPty();
+    term?.dispose();
   });
 
   // Sync theme to terminal
@@ -121,10 +124,13 @@
       if (response.tool_calls && response.tool_calls.length > 0) {
         // Handle tool calls
         for (const toolCall of response.tool_calls) {
-          const { name, arguments: args } = toolCall.function;
+          const { name, arguments: rawArgs } = toolCall.function;
 
           if (name === 'run_command') {
-            const cmd = (args as any).command;
+            const args = rawArgs as { command?: unknown };
+            const cmd = typeof args.command === 'string' ? args.command : '';
+            if (!cmd.trim()) continue;
+
             // Show what we're running
             const toolMsg: ChatMessage = {
               id: uuid(),

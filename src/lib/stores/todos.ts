@@ -94,12 +94,23 @@ export async function updateTodo(id: string, updates: Partial<Todo>) {
     "actual_minutes",
     "completed_at",
   ];
+
   for (const field of fields) {
     if (updates[field] !== undefined) {
       sets.push(`${field} = $${idx++}`);
       params.push(updates[field]);
     }
   }
+
+  // Keep completion timestamp consistent with status transitions.
+  if (updates.status !== undefined && updates.completed_at === undefined) {
+    sets.push(
+      updates.status === "done"
+        ? "completed_at = datetime('now')"
+        : "completed_at = NULL",
+    );
+  }
+
   if (sets.length === 0) return;
   params.push(id);
   await execute(

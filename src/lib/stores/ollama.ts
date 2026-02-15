@@ -1,8 +1,8 @@
 // ── Ollama Store ────────────────────────────────────────────────────
 
 import { writable } from "svelte/store";
-import type { OllamaModel, ChatMessage } from "../types";
-import { ollamaHealthCheck, listModels } from "../services/ollama";
+import type { OllamaModel, ChatMessage, OllamaMessage } from "../types";
+import { ollamaHealthCheck, listModels, chat } from "../services/ollama";
 
 export const ollamaConnected = writable(false);
 export const ollamaModels = writable<OllamaModel[]>([]);
@@ -63,13 +63,17 @@ export const ollamaStore = derived(
 
 // Chat helper using the selected model
 export async function chatWithOllama(
-  messages: { role: string; content: string }[],
+  messages: OllamaMessage[],
 ): Promise<string> {
   let model = "";
   selectedModel.subscribe((m) => (model = m))();
   if (!model) throw new Error("No model selected");
-  const result = await import("../services/ollama").then((m) =>
-    m.chat(model, messages as any),
-  );
-  return result.message?.content || "";
+
+  const result = await chat({
+    model,
+    messages,
+    stream: false,
+  });
+
+  return result.content || "";
 }

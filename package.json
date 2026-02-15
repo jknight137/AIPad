@@ -1,8 +1,8 @@
 {
   "name": "aipad",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,10 +10,19 @@
     "tauri": "tauri",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "tauri",
+    "svelte",
+    "llm",
+    "productivity",
+    "ollama",
+    "notes",
+    "terminal",
+    "desktop-app"
+  ],
+  "author": "AIPad Contributors",
+  "license": "MIT",
+  "description": "Lightweight LLM-powered productivity cockpit — notes, vault, terminal, todos, calendar & analytics in one desktop app",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "@tsconfig/svelte": "^5.0.7",

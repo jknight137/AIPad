@@ -11,6 +11,9 @@
   let editingId: string | null = null;
   let editText = '';
 
+  const VALID_PRIORITIES: Priority[] = ['p1', 'p2', 'p3', 'p4'];
+  const VALID_STATUSES: TodoStatus[] = ['inbox', 'next', 'waiting', 'someday', 'done'];
+
   onMount(async () => {
     await Promise.all([loadTodos(), loadProjects()]);
   });
@@ -47,8 +50,15 @@
     await updateTodo(id, { priority });
   }
 
-  const priorityLabels: Record<string, string> = { p1: '🔴 P1', p2: '🟠 P2', p3: '🔵 P3', p4: '⚪ P4' };
-  const statusLabels: Record<string, string> = { inbox: '📥', next: '▶️', waiting: '⏳', someday: '💭', done: '✅' };
+  function parsePriority(value: string): Priority {
+    return VALID_PRIORITIES.includes(value as Priority) ? (value as Priority) : 'p3';
+  }
+
+  function parseStatus(value: string): TodoStatus {
+    return VALID_STATUSES.includes(value as TodoStatus)
+      ? (value as TodoStatus)
+      : 'inbox';
+  }
 
   $: displayTodos = activeTab === 'inbox' ? $inboxTodos :
                      activeTab === 'active' ? $activeTodos.filter(t => t.status !== 'inbox') :
@@ -112,7 +122,7 @@
         <div class="todo-meta">
           <select
             value={todo.priority}
-            on:change={(e) => setPriority(todo.id, e.currentTarget.value)}
+            on:change={(e) => setPriority(todo.id, parsePriority(e.currentTarget.value))}
             class="priority-select"
           >
             <option value="p1">🔴 P1</option>
@@ -124,7 +134,7 @@
           {#if todo.status !== 'done'}
             <select
               value={todo.status}
-              on:change={(e) => setStatus(todo.id, e.currentTarget.value)}
+              on:change={(e) => setStatus(todo.id, parseStatus(e.currentTarget.value))}
               class="status-select"
             >
               <option value="inbox">📥 Inbox</option>
