@@ -1,0 +1,87 @@
+/* ── Synthwave Theme ──────────────────────────────────────────────── */
+/* Dark purple gradients, warm pink, orange, sunset vibes */
+
+:root[data-theme="synthwave"] {
+  --bg-primary: #1a1025;
+  --bg-secondary: #241734;
+  --bg-tertiary: #2e1f42;
+  --bg-hover: #3d2a56;
+  --bg-active: #ff6ac122;
+
+  --text-primary: #f8e8ff;
+  --text-secondary: #c8a8e8;
+  --text-muted: #6a4a8a;
+  --text-inverse: #1a1025;
+
+  --accent-primary: #ff6ac1;
+  --accent-secondary: #ffcc00;
+  --accent-tertiary: #ff9e64;
+
+  --border-primary: #3d2a56;
+  --border-secondary: #2e1f42;
+
+  --input-bg: #1a1025;
+  --input-border: #3d2a56;
+
+  --success: #72f1b8;
+  --warning: #ffcc00;
+  --error: #fe4450;
+  --info: #36f9f6;
+
+  --sidebar-bg: #130b1c;
+  --sidebar-text: #c8a8e8aa;
+  --sidebar-active: #ff6ac1;
+  --sidebar-hover: #ff6ac111;
+
+  --statusbar-bg: #130b1c;
+  --statusbar-text: #c8a8e8aa;
+
+  --topbar-bg: #241734;
+
+  --scrollbar-thumb: #3d2a56;
+  --scrollbar-thumb-hover: #5a3d78;
+
+  --shadow-sm: 0 2px 4px rgba(26, 16, 37, 0.5);
+  --shadow-md:
+    0 4px 12px rgba(26, 16, 37, 0.6), 0 0 10px rgba(255, 106, 193, 0.1);
+  --shadow-lg:
+    0 8px 24px rgba(26, 16, 37, 0.7), 0 0 20px rgba(255, 106, 193, 0.15);
+
+  --terminal-bg: #1a1025;
+  --terminal-fg: #36f9f6;
+  --terminal-cursor: #ff6ac1;
+
+  --editor-bg: #1a1025;
+  --editor-line-highlight: #ff6ac108;
+
+  --card-bg: #241734;
+  --card-border: #3d2a56;
+
+  --badge-bg: #ff6ac122;
+  --badge-text: #ff6ac1;
+
+  --pomodoro-work: #fe4450;
+  --pomodoro-break: #72f1b8;
+  --pomodoro-long: #36f9f6;
+
+  --quadrant-do: #fe445022;
+  --quadrant-schedule: #36f9f622;
+  --quadrant-delegate: #ffcc0022;
+  --quadrant-eliminate: #3d2a5644;
+  --quadrant-do-border: #fe4450;
+  --quadrant-schedule-border: #36f9f6;
+  --quadrant-delegate-border: #ffcc00;
+  --quadrant-eliminate-border: #6a4a8a;
+}
+
+/* Retro grid background */
+:root[data-theme="synthwave"] #app {
+  background-image:
+    linear-gradient(transparent 60%, rgba(255, 106, 193, 0.03) 100%),
+    linear-gradient(rgba(61, 42, 86, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 42, 86, 0.15) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    30px 30px,
+    30px 30px;
+}

@@ -1,0 +1,96 @@
+/* ── Retro Theme ──────────────────────────────────────────────────── */
+/* Amber/green phosphor CRT terminal, scanlines */
+
+:root[data-theme="retro"] {
+  --bg-primary: #0a0a00;
+  --bg-secondary: #111100;
+  --bg-tertiary: #1a1a0a;
+  --bg-hover: #222200;
+  --bg-active: #ffb00015;
+
+  --text-primary: #ffb000;
+  --text-secondary: #cc8a00;
+  --text-muted: #665500;
+  --text-inverse: #0a0a00;
+
+  --accent-primary: #ffb000;
+  --accent-secondary: #33ff33;
+  --accent-tertiary: #ff6600;
+
+  --border-primary: #ffb00033;
+  --border-secondary: #ffb00022;
+
+  --input-bg: #0a0a00;
+  --input-border: #ffb00044;
+
+  --success: #33ff33;
+  --warning: #ffb000;
+  --error: #ff3300;
+  --info: #ffb000;
+
+  --sidebar-bg: #050500;
+  --sidebar-text: #ffb00088;
+  --sidebar-active: #ffb000;
+  --sidebar-hover: #ffb00011;
+
+  --statusbar-bg: #050500;
+  --statusbar-text: #ffb00088;
+
+  --topbar-bg: #111100;
+
+  --scrollbar-thumb: #ffb00033;
+  --scrollbar-thumb-hover: #ffb00066;
+
+  --shadow-sm: 0 0 5px rgba(255, 176, 0, 0.15);
+  --shadow-md: 0 0 15px rgba(255, 176, 0, 0.2);
+  --shadow-lg: 0 0 30px rgba(255, 176, 0, 0.2);
+
+  --terminal-bg: #0a0a00;
+  --terminal-fg: #ffb000;
+  --terminal-cursor: #ffb000;
+
+  --editor-bg: #0a0a00;
+  --editor-line-highlight: #ffb00008;
+
+  --card-bg: #111100;
+  --card-border: #ffb00033;
+
+  --badge-bg: #ffb00022;
+  --badge-text: #ffb000;
+
+  --pomodoro-work: #ff3300;
+  --pomodoro-break: #33ff33;
+  --pomodoro-long: #ffb000;
+
+  --quadrant-do: #ff330022;
+  --quadrant-schedule: #ffb00022;
+  --quadrant-delegate: #ff660022;
+  --quadrant-eliminate: #ffb00011;
+  --quadrant-do-border: #ff3300;
+  --quadrant-schedule-border: #ffb000;
+  --quadrant-delegate-border: #ff6600;
+  --quadrant-eliminate-border: #665500;
+}
+
+/* Scanline overlay effect */
+:root[data-theme="retro"] #app::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+/* CRT text glow */
+:root[data-theme="retro"] {
+  font-family: "Courier New", "Lucida Console", monospace !important;
+}

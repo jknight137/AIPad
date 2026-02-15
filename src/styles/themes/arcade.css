@@ -1,0 +1,81 @@
+/* ── Arcade Theme ─────────────────────────────────────────────────── */
+/* 80s arcade cabinet: dark purple, pixel vibes, bright primary colors */
+
+:root[data-theme="arcade"] {
+  --bg-primary: #1a0533;
+  --bg-secondary: #220944;
+  --bg-tertiary: #2d1055;
+  --bg-hover: #3d1a6e;
+  --bg-active: #ffe66d22;
+
+  --text-primary: #f0e6ff;
+  --text-secondary: #c9b3e8;
+  --text-muted: #7a5da8;
+  --text-inverse: #1a0533;
+
+  --accent-primary: #ffe66d;
+  --accent-secondary: #ff6b9d;
+  --accent-tertiary: #4ecdc4;
+
+  --border-primary: #4a2080;
+  --border-secondary: #3d1a6e;
+
+  --input-bg: #1a0533;
+  --input-border: #4a2080;
+
+  --success: #4ecdc4;
+  --warning: #ffe66d;
+  --error: #ff6b9d;
+  --info: #45b7d1;
+
+  --sidebar-bg: #120228;
+  --sidebar-text: #c9b3e8aa;
+  --sidebar-active: #ffe66d;
+  --sidebar-hover: #ffe66d11;
+
+  --statusbar-bg: #120228;
+  --statusbar-text: #c9b3e8aa;
+
+  --topbar-bg: #220944;
+
+  --scrollbar-thumb: #4a2080;
+  --scrollbar-thumb-hover: #6b35b0;
+
+  --shadow-sm: 0 2px 4px rgba(26, 5, 51, 0.5);
+  --shadow-md: 0 4px 12px rgba(26, 5, 51, 0.6);
+  --shadow-lg: 0 8px 24px rgba(26, 5, 51, 0.7);
+
+  --terminal-bg: #1a0533;
+  --terminal-fg: #4ecdc4;
+  --terminal-cursor: #ffe66d;
+
+  --editor-bg: #1a0533;
+  --editor-line-highlight: #ffe66d08;
+
+  --card-bg: #220944;
+  --card-border: #4a2080;
+
+  --badge-bg: #ffe66d22;
+  --badge-text: #ffe66d;
+
+  --pomodoro-work: #ff6b9d;
+  --pomodoro-break: #4ecdc4;
+  --pomodoro-long: #45b7d1;
+
+  --quadrant-do: #ff6b9d22;
+  --quadrant-schedule: #45b7d122;
+  --quadrant-delegate: #ffe66d22;
+  --quadrant-eliminate: #4a208033;
+  --quadrant-do-border: #ff6b9d;
+  --quadrant-schedule-border: #45b7d1;
+  --quadrant-delegate-border: #ffe66d;
+  --quadrant-eliminate-border: #7a5da8;
+}
+
+/* Pixel grid background */
+:root[data-theme="arcade"] #app {
+  background-image:
+    linear-gradient(rgba(74, 32, 128, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 32, 128, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

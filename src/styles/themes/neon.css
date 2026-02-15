@@ -1,0 +1,88 @@
+/* ── Neon Theme ───────────────────────────────────────────────────── */
+/* Electric glow, black background, cyan/pink/green accents */
+
+:root[data-theme="neon"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+  --bg-hover: #1a1a2e;
+  --bg-active: #00ffff15;
+
+  --text-primary: #ffffff;
+  --text-secondary: #00ffff;
+  --text-muted: #555577;
+  --text-inverse: #000000;
+
+  --accent-primary: #00ffff;
+  --accent-secondary: #ff00ff;
+  --accent-tertiary: #00ff41;
+
+  --border-primary: #00ffff33;
+  --border-secondary: #ff00ff22;
+
+  --input-bg: #0a0a0a;
+  --input-border: #00ffff44;
+
+  --success: #00ff41;
+  --warning: #ffff00;
+  --error: #ff0055;
+  --info: #00ffff;
+
+  --sidebar-bg: #000000;
+  --sidebar-text: #00ffff88;
+  --sidebar-active: #00ffff;
+  --sidebar-hover: #00ffff11;
+
+  --statusbar-bg: #000000;
+  --statusbar-text: #00ffff88;
+
+  --topbar-bg: #0a0a0a;
+
+  --scrollbar-thumb: #00ffff33;
+  --scrollbar-thumb-hover: #00ffff66;
+
+  --shadow-sm: 0 0 5px rgba(0, 255, 255, 0.2);
+  --shadow-md: 0 0 15px rgba(0, 255, 255, 0.3);
+  --shadow-lg: 0 0 30px rgba(0, 255, 255, 0.3), 0 0 60px rgba(255, 0, 255, 0.1);
+
+  --terminal-bg: #000000;
+  --terminal-fg: #00ffff;
+  --terminal-cursor: #ff00ff;
+
+  --editor-bg: #000000;
+  --editor-line-highlight: #00ffff08;
+
+  --card-bg: #0a0a0a;
+  --card-border: #00ffff33;
+
+  --badge-bg: #00ffff22;
+  --badge-text: #00ffff;
+
+  --pomodoro-work: #ff0055;
+  --pomodoro-break: #00ff41;
+  --pomodoro-long: #00ffff;
+
+  --quadrant-do: #ff005522;
+  --quadrant-schedule: #00ffff22;
+  --quadrant-delegate: #ffff0022;
+  --quadrant-eliminate: #ffffff11;
+  --quadrant-do-border: #ff0055;
+  --quadrant-schedule-border: #00ffff;
+  --quadrant-delegate-border: #ffff00;
+  --quadrant-eliminate-border: #555577;
+}
+
+/* Neon glow effects */
+:root[data-theme="neon"] .sidebar-icon.active,
+:root[data-theme="neon"] .accent-glow {
+  text-shadow:
+    0 0 10px var(--accent-primary),
+    0 0 20px var(--accent-primary);
+  filter: drop-shadow(0 0 5px var(--accent-primary));
+}
+:root[data-theme="neon"] input:focus,
+:root[data-theme="neon"] textarea:focus {
+  box-shadow:
+    0 0 10px var(--accent-primary),
+    inset 0 0 5px rgba(0, 255, 255, 0.1);
+}

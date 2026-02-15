@@ -1,0 +1,108 @@
+/* ── Cyberpunk Theme ──────────────────────────────────────────────── */
+/* Dark navy, neon pink, electric blue, chrome silver */
+
+:root[data-theme="cyberpunk"] {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #0f1538;
+  --bg-tertiary: #151d4a;
+  --bg-hover: #1c2660;
+  --bg-active: #ff2a6d15;
+
+  --text-primary: #d1f7ff;
+  --text-secondary: #7eb8c9;
+  --text-muted: #3a5a6a;
+  --text-inverse: #0a0e27;
+
+  --accent-primary: #ff2a6d;
+  --accent-secondary: #05d9e8;
+  --accent-tertiary: #d1f7ff;
+
+  --border-primary: #1c2660;
+  --border-secondary: #151d4a;
+
+  --input-bg: #0a0e27;
+  --input-border: #1c2660;
+
+  --success: #05d9e8;
+  --warning: #f9c80e;
+  --error: #ff2a6d;
+  --info: #05d9e8;
+
+  --sidebar-bg: #050818;
+  --sidebar-text: #7eb8c9aa;
+  --sidebar-active: #ff2a6d;
+  --sidebar-hover: #ff2a6d11;
+
+  --statusbar-bg: #050818;
+  --statusbar-text: #7eb8c9aa;
+
+  --topbar-bg: #0f1538;
+
+  --scrollbar-thumb: #1c2660;
+  --scrollbar-thumb-hover: #2a3880;
+
+  --shadow-sm: 0 0 5px rgba(255, 42, 109, 0.2);
+  --shadow-md:
+    0 0 15px rgba(255, 42, 109, 0.2), 0 0 15px rgba(5, 217, 232, 0.1);
+  --shadow-lg:
+    0 0 30px rgba(255, 42, 109, 0.3), 0 0 30px rgba(5, 217, 232, 0.15);
+
+  --terminal-bg: #0a0e27;
+  --terminal-fg: #05d9e8;
+  --terminal-cursor: #ff2a6d;
+
+  --editor-bg: #0a0e27;
+  --editor-line-highlight: #05d9e808;
+
+  --card-bg: #0f1538;
+  --card-border: #1c2660;
+
+  --badge-bg: #ff2a6d22;
+  --badge-text: #ff2a6d;
+
+  --pomodoro-work: #ff2a6d;
+  --pomodoro-break: #05d9e8;
+  --pomodoro-long: #d1f7ff;
+
+  --quadrant-do: #ff2a6d22;
+  --quadrant-schedule: #05d9e822;
+  --quadrant-delegate: #f9c80e22;
+  --quadrant-eliminate: #1c266044;
+  --quadrant-do-border: #ff2a6d;
+  --quadrant-schedule-border: #05d9e8;
+  --quadrant-delegate-border: #f9c80e;
+  --quadrant-eliminate-border: #3a5a6a;
+}
+
+/* Glitch animation for cyberpunk headings */
+@keyframes glitch {
+  0% {
+    text-shadow:
+      2px 0 #ff2a6d,
+      -2px 0 #05d9e8;
+  }
+  25% {
+    text-shadow:
+      -2px 0 #ff2a6d,
+      2px 0 #05d9e8;
+  }
+  50% {
+    text-shadow:
+      2px 2px #ff2a6d,
+      -2px -2px #05d9e8;
+  }
+  75% {
+    text-shadow:
+      -1px 0 #ff2a6d,
+      1px 0 #05d9e8;
+  }
+  100% {
+    text-shadow:
+      2px 0 #ff2a6d,
+      -2px 0 #05d9e8;
+  }
+}
+:root[data-theme="cyberpunk"] h1,
+:root[data-theme="cyberpunk"] h2 {
+  animation: glitch 3s infinite;
+}

@@ -1,0 +1,96 @@
+/* ── Matrix Theme ─────────────────────────────────────────────────── */
+/* Pure black, Matrix green, monospace everything */
+
+:root[data-theme="matrix"] {
+  --bg-primary: #000000;
+  --bg-secondary: #001100;
+  --bg-tertiary: #002200;
+  --bg-hover: #003300;
+  --bg-active: #00ff4115;
+
+  --text-primary: #00ff41;
+  --text-secondary: #00cc33;
+  --text-muted: #006622;
+  --text-inverse: #000000;
+
+  --accent-primary: #00ff41;
+  --accent-secondary: #33ff77;
+  --accent-tertiary: #88ffaa;
+
+  --border-primary: #00ff4133;
+  --border-secondary: #00ff4122;
+
+  --input-bg: #000000;
+  --input-border: #00ff4144;
+
+  --success: #00ff41;
+  --warning: #88ff00;
+  --error: #ff3333;
+  --info: #00ff41;
+
+  --sidebar-bg: #000000;
+  --sidebar-text: #00ff4188;
+  --sidebar-active: #00ff41;
+  --sidebar-hover: #00ff4111;
+
+  --statusbar-bg: #000000;
+  --statusbar-text: #00ff4188;
+
+  --topbar-bg: #001100;
+
+  --scrollbar-thumb: #00ff4133;
+  --scrollbar-thumb-hover: #00ff4166;
+
+  --shadow-sm: 0 0 5px rgba(0, 255, 65, 0.15);
+  --shadow-md: 0 0 15px rgba(0, 255, 65, 0.2);
+  --shadow-lg: 0 0 30px rgba(0, 255, 65, 0.25);
+
+  --terminal-bg: #000000;
+  --terminal-fg: #00ff41;
+  --terminal-cursor: #00ff41;
+
+  --editor-bg: #000000;
+  --editor-line-highlight: #00ff4108;
+
+  --card-bg: #001100;
+  --card-border: #00ff4133;
+
+  --badge-bg: #00ff4122;
+  --badge-text: #00ff41;
+
+  --pomodoro-work: #ff3333;
+  --pomodoro-break: #00ff41;
+  --pomodoro-long: #33ff77;
+
+  --quadrant-do: #ff333322;
+  --quadrant-schedule: #00ff4122;
+  --quadrant-delegate: #88ff0022;
+  --quadrant-eliminate: #00ff4111;
+  --quadrant-do-border: #ff3333;
+  --quadrant-schedule-border: #00ff41;
+  --quadrant-delegate-border: #88ff00;
+  --quadrant-eliminate-border: #006622;
+}
+
+/* Matrix monospace override */
+:root[data-theme="matrix"] {
+  font-family: "Courier New", "Lucida Console", monospace !important;
+}
+:root[data-theme="matrix"] * {
+  font-family: inherit;
+}
+
+/* Subtle falling code background */
+:root[data-theme="matrix"] #app::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='200'%3E%3Ctext x='10' y='20' fill='%2300ff41' font-family='monospace' font-size='14'%3E01%3C/text%3E%3Ctext x='30' y='60' fill='%2300ff41' font-family='monospace' font-size='14'%3E10%3C/text%3E%3Ctext x='60' y='100' fill='%2300ff41' font-family='monospace' font-size='14'%3E11%3C/text%3E%3Ctext x='20' y='140' fill='%2300ff41' font-family='monospace' font-size='14'%3E00%3C/text%3E%3Ctext x='70' y='180' fill='%2300ff41' font-family='monospace' font-size='14'%3E01%3C/text%3E%3C/svg%3E");
+  background-size: 100px 200px;
+}
