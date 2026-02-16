@@ -16,12 +16,23 @@ export async function checkOllamaConnection() {
     const models = await listModels();
     ollamaModels.set(models);
     // Auto-select best model if none selected
+    const toolFamilies = ["llama", "qwen2", "mistral"];
     const stored = localStorage.getItem("aipad_ollama_model");
-    if (stored && models.find((m) => m.name === stored)) {
-      selectedModel.set(stored);
+    const storedModel = stored ? models.find((m) => m.name === stored) : null;
+    const storedSupportsTools =
+      storedModel?.details?.families?.some((f: string) =>
+        toolFamilies.includes(f),
+      ) ?? false;
+
+    if (storedModel && storedSupportsTools) {
+      selectedModel.set(stored!);
     } else if (models.length > 0) {
-      // Pick the largest model (likely best)
-      const best = models.sort((a, b) => b.size - a.size)[0];
+      // Prefer models from families that support tool calling
+      const toolCapable = models.filter((m) =>
+        m.details?.families?.some((f: string) => toolFamilies.includes(f)),
+      );
+      const pool = toolCapable.length > 0 ? toolCapable : models;
+      const best = pool.sort((a, b) => b.size - a.size)[0];
       selectedModel.set(best.name);
       localStorage.setItem("aipad_ollama_model", best.name);
     }

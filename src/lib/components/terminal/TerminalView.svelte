@@ -23,6 +23,23 @@
   let unlistenPty: (() => void) | null = null;
   let resizeObserver: ResizeObserver | null = null;
   let termInputDisposer: { dispose: () => void } | null = null;
+  let pendingCommand: string | null = null;
+
+  const RISKY_COMMAND_PATTERNS: RegExp[] = [
+    /\brm\b[^\n]*\b-rf\b/i,
+    /\bremove-item\b[^\n]*(-recurse|-force)/i,
+    /\bdel\b[^\n]*(\/f|\/s|\/q)/i,
+    /\bformat\b\s+[a-z]:/i,
+    /\bdiskpart\b/i,
+    /\breg\b\s+delete\b/i,
+    /\bgit\s+reset\s+--hard\b/i,
+    /\bgit\s+clean\s+-fd/i,
+    /\bshutdown\b/i,
+    /\brestart-computer\b/i,
+    /\bset-content\b[^\n]*\b-force\b/i,
+    /\btruncate\b/i,
+    /(^|\s)>\s*[^\s]+/,
+  ];
 
   const termThemes: Record<string, any> = {
     dark: { background: '#0d1117', foreground: '#e6edf3', cursor: '#58a6ff', selectionBackground: '#264f78' },
@@ -87,6 +104,41 @@
     term?.dispose();
   });
 
+  function isRiskyCommand(command: string): boolean {
+    const normalized = command.trim();
+    return RISKY_COMMAND_PATTERNS.some((pattern) => pattern.test(normalized));
+  }
+
+  async function executeTerminalCommand(command: string) {
+    if (!shellId || !command.trim()) return;
+    await invoke('write_to_shell', { id: shellId, data: `${command}\r\n` });
+  }
+
+  async function approvePendingCommand() {
+    if (!pendingCommand) return;
+    const command = pendingCommand;
+    pendingCommand = null;
+    await executeTerminalCommand(command);
+    addChatMessage({
+      id: uuid(),
+      role: 'assistant',
+      content: `Approved and ran: \`${command}\``,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  function denyPendingCommand() {
+    if (!pendingCommand) return;
+    const command = pendingCommand;
+    pendingCommand = null;
+    addChatMessage({
+      id: uuid(),
+      role: 'assistant',
+      content: `Skipped risky command: \`${command}\``,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   // Sync theme to terminal
   $: if (term && $theme) {
     term.options.theme = termThemes[$theme] || termThemes.dark;
@@ -131,7 +183,17 @@
             const cmd = typeof args.command === 'string' ? args.command : '';
             if (!cmd.trim()) continue;
 
-            // Show what we're running
+            if (isRiskyCommand(cmd)) {
+              pendingCommand = cmd;
+              addChatMessage({
+                id: uuid(),
+                role: 'assistant',
+                content: `Risky command requires approval: \`${cmd}\``,
+                timestamp: new Date().toISOString(),
+              });
+              continue;
+            }
+
             const toolMsg: ChatMessage = {
               id: uuid(),
               role: 'assistant',
@@ -140,12 +202,8 @@
             };
             addChatMessage(toolMsg);
 
-            // Execute in terminal
-            if (shellId) {
-              await invoke('write_to_shell', { id: shellId, data: cmd + '\r\n' });
-              // Wait a moment for output
-              await new Promise(r => setTimeout(r, 1500));
-            }
+            await executeTerminalCommand(cmd);
+            await new Promise(r => setTimeout(r, 1500));
           }
         }
       }
@@ -232,6 +290,17 @@
             </div>
           {/if}
         </div>
+
+        {#if pendingCommand}
+          <div class="command-approval">
+            <div class="approval-text">Approve risky command?</div>
+            <code class="approval-command">{pendingCommand}</code>
+            <div class="approval-actions">
+              <button class="approve-btn" on:click={approvePendingCommand}>Approve</button>
+              <button class="deny-btn" on:click={denyPendingCommand}>Deny</button>
+            </div>
+          </div>
+        {/if}
 
         <div class="chat-input-area">
           <input
@@ -387,6 +456,56 @@
     display: inline-block;
     animation: pulse 1s infinite;
     color: var(--text-muted);
+  }
+
+  .command-approval {
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .approval-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--warning);
+  }
+
+  .approval-command {
+    display: block;
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-tertiary);
+    font-family: var(--font-mono);
+    word-break: break-all;
+  }
+
+  .approval-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .approve-btn,
+  .deny-btn {
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .approve-btn {
+    background: var(--warning);
+    color: var(--text-inverse);
+  }
+
+  .deny-btn {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
   }
 
   .chat-input-area {

@@ -57,18 +57,28 @@ export interface OllamaTool {
 
 // Non-streaming chat
 export async function chat(options: OllamaChatOptions): Promise<OllamaMessage> {
+  const payload: Record<string, unknown> = {
+    model: options.model,
+    messages: options.messages,
+    stream: false,
+  };
+  if (options.tools?.length) {
+    payload.tools = options.tools;
+  }
+
   const res = await fetch(`${baseUrl}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: options.model,
-      messages: options.messages,
-      stream: false,
-      tools: options.tools,
-    }),
+    body: JSON.stringify(payload),
   });
+
   if (!res.ok) {
-    throw new Error(`Ollama error: ${res.status} ${await res.text()}`);
+    const errorText = await res.text();
+    // If the model doesn't support tools, retry without them
+    if (options.tools?.length && errorText.includes("does not support tools")) {
+      return chat({ ...options, tools: undefined });
+    }
+    throw new Error(`Ollama error: ${res.status} ${errorText}`);
   }
   const data = await res.json();
   return data.message;
